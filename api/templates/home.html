@@ -9,12 +9,30 @@
 <br>
 
 {% if table_data %}
-
-    {% for user_data in table_data %}
-
-        {{ user_data.user_name }} {{ user_data.p5_balance }} {{ user_data.reward_balance }} login
-        <br>
-
-    {% endfor %}
-
+    <table border="1" cellspacing="0" cellpadding="10">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>P5 Balance</th>
+                <th>Reward Balance</th>
+                <th>Login</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_data in table_data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ user_data.user_name }}</td>
+                <td>{{ user_data.p5_balance }}</td>
+                <td>{{ user_data.reward_balance }}</td>
+                <td>
+                    <form action="{% url 'user_info_page' user_data.user_id %}" method="get">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endif %}
