@@ -6,7 +6,36 @@
 </head>
 <body>
 
+<h2> {{ user.name }} </h2>
+<h3> Reward Balance: {{ reward_balance }} </h3>
 
+
+<table border="1" cellspacing="0" cellpadding="10">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Date-Time</th>
+            <th>Rewards Received</th>
+            <th>User Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if reward_received_list %}
+            {% for reward in reward_received_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ reward.datetime_stamp }}</td>
+                    <td>{{ reward.points }}</td>
+                    <td>{{ reward.given_by.name }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4">No rewards received.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
 
 </body>
 </html>

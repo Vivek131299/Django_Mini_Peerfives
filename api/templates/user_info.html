@@ -28,9 +28,11 @@
 <br><br>
 
 {% if reward_balance is not None %}
-    <button onclick="{% url 'reward_balance_page' user.id %}'">
+<form action="{% url 'reward_balance_page' user.id %}">
+    <button type="submit">
         Reward Balance: {{ reward_balance }}
     </button>
+</form>
 {% endif %}
 
 </body>

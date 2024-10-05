@@ -104,3 +104,11 @@ def reward_balance_page(request, id=None):
 
         return render(request, "reward_balance_page.html", {"user": user, "reward_balance": reward_balance, "reward_received_list": reward_received_list})
 
+
+def delete_reward(request, id=None, reward_id=None):
+    print(id, reward_id)
+    if id and reward_id:
+        reward_to_delete = RewardHistory.objects.get(pk=reward_id)
+        if id == reward_to_delete.given_by.id:
+            reward_to_delete.delete()
+            return redirect("p5_balance_page", id=id)

@@ -9,5 +9,6 @@ urlpatterns = [
     path('<int:id>/rewards/new', views.new_reward_page, name="new_reward_page"),
     path('<int:id>/rewards/new/create', views.create_reward, name="create_reward"),
     path('<int:id>/rewards', views.reward_balance_page, name="reward_balance_page"),
+    path('<int:id>/delete_reward/<int:reward_id>', views.delete_reward, name="delete_reward"),
     path('', views.get_all_users, name="get_all_users"),
 ]

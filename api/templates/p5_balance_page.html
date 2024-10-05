@@ -35,7 +35,7 @@
                 <td>{{ reward.points }}</td>
                 <td>{{ reward.given_to.name }}</td>
                 <td>
-                    <form method="post" action="#">
+                    <form method="post" action="{% url 'delete_reward' user.id reward.id %}">
                         {% csrf_token %}
                         <button type="submit">Delete</button>
                     </form>
