@@ -39,9 +39,15 @@ def get_all_users(request):
 
 @csrf_exempt
 def user_info_page(request, id=None):
+    p5_balance = None
+    reward_balance = None
     if id:
         user = get_object_or_404(PeerUser, pk=id)
         form = PeerUserForm(instance=user)
+        p5_balance = 100 - (RewardHistory.objects.filter(given_by_id=user.id).aggregate(total_given=Sum('points'))[
+                                'total_given'] or 0)
+        reward_balance = RewardHistory.objects.filter(given_to_id=user.id).aggregate(total_received=Sum('points'))[
+                             'total_received'] or 0
     else:
         form = PeerUserForm()
 
@@ -55,4 +61,46 @@ def user_info_page(request, id=None):
             form.save()
             return redirect("get_all_users")
 
-    return render(request, "user_info.html", {"form": form, "user": user if id else None})
+    return render(request, "user_info.html", {"form": form, "user": user if id else None, "p5_balance": p5_balance, "reward_balance": reward_balance})
+
+
+def p5_balance_page(request, id=None):
+    if id:
+        user = get_object_or_404(PeerUser, pk=id)
+        p5_balance = 100 - (RewardHistory.objects.filter(given_by_id=user.id).aggregate(total_given=Sum('points'))[
+                                'total_given'] or 0)
+
+        p5_given_list = list(RewardHistory.objects.filter(given_by_id=user.id))
+
+        return render(request, "p5_balance_page.html", {"user": user, "p5_balance": p5_balance, "p5_given_list": p5_given_list})
+
+
+def new_reward_page(request, id=None):
+    if id:
+        user = get_object_or_404(PeerUser, pk=id)
+        users_list = PeerUser.objects.exclude(pk=id)
+        p5_balance = 100 - (RewardHistory.objects.filter(given_by_id=user.id).aggregate(total_given=Sum('points'))[
+                                'total_given'] or 0)
+        return render(request, "create_new_reward.html", {"user": user, "users_list": users_list, "p5_balance": p5_balance})
+
+
+def create_reward(request, id=None):
+    if request.method == "POST" and id:
+        recipient_id = request.POST.get('recipient')
+        points = float(request.POST.get('points'))
+
+        reward = RewardHistory.objects.create(given_by_id=id, given_to_id=recipient_id, points=points)
+
+        return redirect("p5_balance_page", id=id)
+
+
+def reward_balance_page(request, id=None):
+    if id:
+        user = get_object_or_404(PeerUser, pk=id)
+        reward_balance = RewardHistory.objects.filter(given_to_id=user.id).aggregate(total_received=Sum('points'))[
+                             'total_received'] or 0
+
+        reward_received_list = list(RewardHistory.objects.filter(given_to_id=user.id))
+
+        return render(request, "reward_balance_page.html", {"user": user, "reward_balance": reward_balance, "reward_received_list": reward_received_list})
+

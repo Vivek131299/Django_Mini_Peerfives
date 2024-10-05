@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>P5 balance list</title>
+</head>
+<body>
+
+<h2> {{ user.name }} </h2>
+<h3> P5 Balance: {{ p5_balance }} </h3>
+
+<form action="{% url 'new_reward_page' user.id %}">
+    <button type="submit">
+        Create new reward
+    </button>
+</form>
+
+<h2>P5 History</h2>
+
+<table border="1" cellspacing="0" cellpadding="10">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Date-Time</th>
+            <th>P5 Given</th>
+            <th>User Name</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reward in p5_given_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ reward.datetime_stamp }}</td>
+                <td>{{ reward.points }}</td>
+                <td>{{ reward.given_to.name }}</td>
+                <td>
+                    <form method="post" action="#">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

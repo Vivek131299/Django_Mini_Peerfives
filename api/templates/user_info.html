@@ -15,5 +15,23 @@
     <button type="submit">Save</button>
 </form>
 
+<br><br>
+
+{% if p5_balance is not None %}
+<form action="{% url 'p5_balance_page' user.id %}">
+    <button type="submit">
+        P5 Balance: {{ p5_balance }}
+    </button>
+</form>
+{% endif %}
+
+<br><br>
+
+{% if reward_balance is not None %}
+    <button onclick="{% url 'reward_balance_page' user.id %}'">
+        Reward Balance: {{ reward_balance }}
+    </button>
+{% endif %}
+
 </body>
 </html>
