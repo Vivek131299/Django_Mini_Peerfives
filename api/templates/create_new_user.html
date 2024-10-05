@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new user</title>
+</head>
+<body>
+
+<form method="POST" action="{% url 'create_new_user' %}">
+    <input type="text" name="name" placeholder="User name" required><br>
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

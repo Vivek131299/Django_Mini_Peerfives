@@ -1,0 +1,20 @@
+<H1>
+    Mini Peerfives
+    </H1>
+
+<form action="{% url 'new_user_page' %}" method="get">
+    <button type="submit">Create new user</button>
+</form>
+
+<br>
+
+{% if table_data %}
+
+    {% for user_data in table_data %}
+
+        {{ user_data.user_name }} {{ user_data.p5_balance }} {{ user_data.reward_balance }} login
+        <br>
+
+    {% endfor %}
+
+{% endif %}
